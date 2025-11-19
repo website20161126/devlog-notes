@@ -1,0 +1,33 @@
+{
+  "name": "devlog-notes",
+  "version": "1.0.0",
+  "description": "前端技术学习笔记与总结",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "serve": "vitepress serve"
+  },
+  "keywords": [
+    "frontend",
+    "javascript",
+    "vue",
+    "typescript",
+    "vitepress",
+    "notes",
+    "documentation"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "^1.0.0-rc.31"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/devLog-notes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/devLog-notes/issues"
+  },
+  "homepage": "https://your-username.github.io/devLog-notes/"
+}
