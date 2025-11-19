@@ -10,17 +10,47 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
+      { text: 'HTML', link: '/html/' },
+      { text: 'CSS', link: '/css/' },
       { text: 'JavaScript', link: '/javascript/' },
       { text: 'Vue', link: '/vue/' },
       { text: 'TypeScript', link: '/typescript/' },
       { text: '工程化', link: '/engineering/' },
       { text: '可视化', link: '/visualization/' },
       { text: '监控系统', link: '/monitor-system/' },
+      { text: 'Git命令', link: '/git/' },
       { text: '面试总结', link: '/inbox/interview' },
       { text: '思考随笔', link: '/inbox/thoughts' },
     ],
 
     sidebar: {
+      '/html/': [
+        {
+          text: 'HTML',
+          items: [
+            { text: '概述', link: '/html/' },
+            { text: '基础语法', link: '/html/basic' },
+            { text: '表单元素', link: '/html/forms' },
+            { text: '语义化标签', link: '/html/semantic' },
+            { text: '多媒体', link: '/html/media' }
+          ]
+        }
+      ],
+      
+      '/css/': [
+        {
+          text: 'CSS',
+          items: [
+            { text: '概述', link: '/css/' },
+            { text: '选择器', link: '/css/selectors' },
+            { text: '盒模型', link: '/css/box-model' },
+            { text: 'Flexbox', link: '/css/flexbox' },
+            { text: 'Grid布局', link: '/css/grid' },
+            { text: '响应式设计', link: '/css/responsive' }
+          ]
+        }
+      ],
+      
       '/javascript/': [
         {
           text: 'JavaScript',
@@ -107,6 +137,19 @@ export default defineConfig({
             { text: '地图转换', link: '/monitor-system/map-convert' },
           ],
         },
+      ],
+      
+      '/git/': [
+        {
+          text: 'Git命令',
+          items: [
+            { text: '概述', link: '/git/' },
+            { text: '基础操作', link: '/git/basic' },
+            { text: '分支管理', link: '/git/branch' },
+            { text: '远程操作', link: '/git/remote' },
+            { text: '高级技巧', link: '/git/advanced' }
+          ]
+        }
       ],
     },
 
