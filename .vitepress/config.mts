@@ -21,6 +21,7 @@ export default defineConfig({
       { text: '可视化', link: '/visualization/' },
       { text: '监控系统', link: '/monitor-system/' },
       { text: 'Git命令', link: '/git/' },
+      { text: '前端框架', link: '/frameworks/' },
       { text: '面试总结', link: '/inbox/interview' },
       { text: '思考随笔', link: '/inbox/thoughts' },
     ],
@@ -150,6 +151,20 @@ export default defineConfig({
             { text: '分支管理', link: '/git/branch' },
             { text: '远程操作', link: '/git/remote' },
             { text: '高级技巧', link: '/git/advanced' },
+          ],
+        },
+      ],
+
+      '/frameworks/': [
+        {
+          text: '前端框架',
+          items: [
+            { text: '概述', link: '/frameworks/' },
+            { text: 'React', link: '/frameworks/react' },
+            { text: 'Vue', link: '/frameworks/vue' },
+            { text: 'Angular', link: '/frameworks/angular' },
+            { text: '移动端框架', link: '/frameworks/mobile' },
+            { text: '小程序框架', link: '/frameworks/miniprogram' },
           ],
         },
       ],
