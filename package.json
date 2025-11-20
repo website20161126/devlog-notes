@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "前端技术学习笔记与总结",
   "scripts": {
+    "deploy": "vitepress build && gh-pages -d .vitepress/dist",
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview",
@@ -20,6 +21,7 @@
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "vitepress": "^1.0.0-rc.31"
   },
   "repository": {

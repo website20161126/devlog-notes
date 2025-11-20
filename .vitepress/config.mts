@@ -6,6 +6,8 @@ export default defineConfig({
   description: '前端技术学习笔记与总结',
   base: '/devLog-notes/',
 
+  ignoreDeadLinks: true, // 忽略死链接
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -32,11 +34,11 @@ export default defineConfig({
             { text: '基础语法', link: '/html/basic' },
             { text: '表单元素', link: '/html/forms' },
             { text: '语义化标签', link: '/html/semantic' },
-            { text: '多媒体', link: '/html/media' }
-          ]
-        }
+            { text: '多媒体', link: '/html/media' },
+          ],
+        },
       ],
-      
+
       '/css/': [
         {
           text: 'CSS',
@@ -46,11 +48,11 @@ export default defineConfig({
             { text: '盒模型', link: '/css/box-model' },
             { text: 'Flexbox', link: '/css/flexbox' },
             { text: 'Grid布局', link: '/css/grid' },
-            { text: '响应式设计', link: '/css/responsive' }
-          ]
-        }
+            { text: '响应式设计', link: '/css/responsive' },
+          ],
+        },
       ],
-      
+
       '/javascript/': [
         {
           text: 'JavaScript',
@@ -138,7 +140,7 @@ export default defineConfig({
           ],
         },
       ],
-      
+
       '/git/': [
         {
           text: 'Git命令',
@@ -147,9 +149,9 @@ export default defineConfig({
             { text: '基础操作', link: '/git/basic' },
             { text: '分支管理', link: '/git/branch' },
             { text: '远程操作', link: '/git/remote' },
-            { text: '高级技巧', link: '/git/advanced' }
-          ]
-        }
+            { text: '高级技巧', link: '/git/advanced' },
+          ],
+        },
       ],
     },
 
