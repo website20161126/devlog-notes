@@ -20,7 +20,8 @@
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
-    "vitepress": "^1.0.0-rc.31"
+    "vitepress": "^1.0.0-rc.31",
+    "postcss": "^8.4.31"
   },
   "repository": {
     "type": "git",

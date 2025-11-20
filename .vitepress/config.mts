@@ -147,9 +147,6 @@ export default defineConfig({
       dark: 'github-dark',
     },
     lineNumbers: true,
-    config: md => {
-      // 可以在这里添加 markdown-it 插件
-    },
   },
 
   // Vite 配置
@@ -159,10 +156,5 @@ export default defineConfig({
     },
   },
 
-  // 404 页面配置
-  notFound: {
-    title: '404 - 页面未找到',
-    description: '抱歉，您访问的页面不存在',
-    layout: 'page',
-  },
+
 });
