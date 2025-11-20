@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "前端技术学习笔记与总结",
   "scripts": {
-    "deploy": "vitepress build && git checkout gh-pages && git rm -rf . && git clean -fd && robocopy .vitepress\\dist . /E /NFL /NDL /NJH /NJS && git add . && git commit -m \"Deploy to GitHub Pages\" && git push origin gh-pages && git checkout main",
+    "deploy": "vitepress build && npx gh-pages -d .vitepress/dist",
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview",
