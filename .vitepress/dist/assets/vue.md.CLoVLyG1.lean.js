@@ -1,0 +1,1 @@
+import{_ as i,c as a,o as n,ag as l}from"./chunks/framework.CChaa6F5.js";const g=JSON.parse('{"title":"Vue 学习笔记","description":"","frontmatter":{},"headers":[],"relativePath":"vue.md","filePath":"vue.md"}'),p={name:"vue.md"};function h(k,s,e,t,E,r){return n(),a("div",null,[...s[0]||(s[0]=[l("",41)])])}const y=i(p,[["render",h]]);export{g as __pageData,y as default};
