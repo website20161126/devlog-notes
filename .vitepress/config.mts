@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'Tech Notes',
   description: '前端技术学习笔记与总结',
-  base: '/devLog-notes/',
+  base: '/devlog-notes/',
 
   ignoreDeadLinks: true, // 忽略死链接
 
@@ -166,7 +166,7 @@ export default defineConfig({
 
     // 编辑链接
     editLink: {
-      pattern: 'https://github.com/your-username/devLog-notes/edit/main/:path',
+      pattern: 'https://github.com/website20161126/devlog-notes/edit/main/:path',
       text: '在 GitHub 上编辑此页面',
     },
 
