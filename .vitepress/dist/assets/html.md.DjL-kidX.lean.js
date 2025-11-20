@@ -1,1 +1,0 @@
-import{_ as i,c as a,o as n,ag as l}from"./chunks/framework.C9AzcGFz.js";const d=JSON.parse('{"title":"HTML 学习笔记","description":"","frontmatter":{},"headers":[],"relativePath":"html.md","filePath":"html.md"}'),h={name:"html.md"};function t(p,s,k,E,e,r){return n(),a("div",null,[...s[0]||(s[0]=[l("",66)])])}const y=i(h,[["render",t]]);export{d as __pageData,y as default};

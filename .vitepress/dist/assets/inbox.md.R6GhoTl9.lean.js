@@ -1,1 +1,0 @@
-import{_ as i,c as a,o as n,ag as l}from"./chunks/framework.C9AzcGFz.js";const g=JSON.parse('{"title":"思考随笔","description":"","frontmatter":{},"headers":[],"relativePath":"inbox.md","filePath":"inbox.md"}'),p={name:"inbox.md"};function h(k,s,e,t,r,E){return n(),a("div",null,[...s[0]||(s[0]=[l("",65)])])}const y=i(p,[["render",h]]);export{g as __pageData,y as default};
