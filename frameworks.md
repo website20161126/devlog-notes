@@ -5,18 +5,18 @@
 ## 📱 框架分类
 
 ### PC 端框架
-- **React** - Facebook 开发的声明式 JavaScript 库
-- **Vue** - 渐进式 JavaScript 框架  
-- **Angular** - Google 开发的完整前端框架
+- **[React](https://react.dev/)** - Facebook 开发的声明式 JavaScript 库
+- **[Vue](https://vuejs.org/)** - 渐进式 JavaScript 框架  
+- **[Angular](https://angular.dev/)** - Google 开发的完整前端框架
 
 ### 移动端框架
-- **React Native** - 使用 React 构建原生移动应用
-- **Flutter** - Google 的跨平台 UI 工具包
-- **Ionic** - 基于 Web 技术的混合应用框架
+- **[React Native](https://reactnative.dev/)** - 使用 React 构建原生移动应用
+- **[Flutter](https://flutter.dev/)** - Google 的跨平台 UI 工具包
+- **[Ionic](https://ionicframework.com/)** - 基于 Web 技术的混合应用框架
 
 ### 小程序框架
-- **Taro** - 多端统一开发框架
-- **uni-app** - 使用 Vue 语法开发跨平台应用
+- **[Taro](https://taro.jd.com/)** - 多端统一开发框架
+- **[uni-app](https://uniapp.dcloud.net.cn/)** - 使用 Vue 语法开发跨平台应用
 - **原生小程序** - 微信、支付宝等平台原生开发
 
 ## 🚀 选择框架的考虑因素
@@ -31,10 +31,10 @@
 
 | 框架 | 类型 | 学习难度 | 性能 | 生态 | 适用场景 |
 |------|------|----------|------|------|----------|
-| React | 库 | 中等 | 高 | 丰富 | 大型应用、SPA |
-| Vue | 框架 | 简单 | 高 | 完善 | 中小型项目、快速开发 |
-| Angular | 框架 | 复杂 | 中等 | 完整 | 企业级应用 |
-| React Native | 跨平台 | 中等 | 中等 | 丰富 | 移动应用 |
-| Flutter | 跨平台 | 中等 | 高 | 发展中 | 高性能移动应用 |
+| [React](https://react.dev/) | 库 | 中等 | 高 | 丰富 | 大型应用、SPA |
+| [Vue](https://vuejs.org/) | 框架 | 简单 | 高 | 完善 | 中小型项目、快速开发 |
+| [Angular](https://angular.dev/) | 框架 | 复杂 | 中等 | 完整 | 企业级应用 |
+| [React Native](https://reactnative.dev/) | 跨平台 | 中等 | 中等 | 丰富 | 移动应用 |
+| [Flutter](https://flutter.dev/) | 跨平台 | 中等 | 高 | 发展中 | 高性能移动应用 |
 
 选择合适的框架需要综合考虑项目需求、团队能力和长期维护成本。每个框架都有其优势和适用场景，关键是找到最适合你项目的那个。

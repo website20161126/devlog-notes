@@ -2,6 +2,8 @@
 
 React 是由 Facebook 开发和维护的声明式 JavaScript 库，用于构建用户界面。它是目前最流行的前端框架之一，拥有庞大的生态系统和社区支持。
 
+**官网：[https://react.dev/](https://react.dev/)**
+
 ## 🌟 核心特性
 
 ### JSX 语法

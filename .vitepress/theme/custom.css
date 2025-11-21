@@ -1,0 +1,54 @@
+/* 自定义导航栏选中状态样式 */
+
+/* 增强导航栏当前页面的视觉效果 */
+.VPNav .VPNavBarMenu .VPNavBarMenuLink.VPNavBarMenuLinkActive {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+  position: relative;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink.VPNavBarMenuLinkActive::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: var(--vp-c-brand-1);
+  border-radius: 1px;
+}
+
+/* 悬停效果 */
+.VPNav .VPNavBarMenu .VPNavBarMenuLink:hover {
+  color: var(--vp-c-brand-1);
+  transition: color 0.2s ease;
+}
+
+/* 侧边栏当前页面样式增强 */
+.VPSidebar .VPSidebarItem .VPSidebarItemLink.VPSidebarItemLinkActive {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+  background-color: var(--vp-c-brand-soft);
+  border-radius: 6px;
+}
+
+.VPSidebar .VPSidebarItem .VPSidebarItemLink.VPSidebarItemLinkActive:hover {
+  background-color: var(--vp-c-brand-soft);
+}
+
+/* 移动端导航栏样式 */
+@media (max-width: 768px) {
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink.VPNavBarMenuLinkActive::after {
+    width: 30px;
+  }
+}
+
+/* 暗色主题适配 */
+html.dark .VPNav .VPNavBarMenu .VPNavBarMenuLink.VPNavBarMenuLinkActive {
+  color: var(--vp-c-brand-1);
+}
+
+html.dark .VPNav .VPNavBarMenu .VPNavBarMenuLink.VPNavBarMenuLinkActive::after {
+  background-color: var(--vp-c-brand-1);
+}

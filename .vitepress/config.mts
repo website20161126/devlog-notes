@@ -209,12 +209,21 @@ export default defineConfig({
     lineNumbers: true,
   },
 
+  // 自定义样式
+  head: [
+    ['link', { rel: 'stylesheet', href: '/devlog-notes/custom.css' }]
+  ],
+
   // Vite 配置
   vite: {
     define: {
       __VUE_OPTIONS_API__: false,
     },
+    css: {
+      postcss: {
+        plugins: []
+      }
+    }
   },
-
 
 });

@@ -2,6 +2,8 @@
 
 Angular 是由 Google 开发和维护的完整前端框架，提供了构建大型企业级应用所需的一切功能。它采用 TypeScript 作为主要开发语言，提供了强类型支持和丰富的工具链。
 
+**官网：[https://angular.dev/](https://angular.dev/)**
+
 ## 🌟 核心特性
 
 ### 组件和模板
