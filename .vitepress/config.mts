@@ -211,7 +211,7 @@ export default defineConfig({
 
   // 自定义样式
   head: [
-    ['link', { rel: 'stylesheet', href: '/devlog-notes/custom.css' }]
+    ['link', { rel: 'stylesheet', href: '/custom.css' }]
   ],
 
   // Vite 配置
