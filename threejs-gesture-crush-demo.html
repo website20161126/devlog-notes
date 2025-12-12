@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>手势捏碎模型：粒子化效果 Demo</title>
+  <style>
+    /* --- 基础样式 --- */
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #050505;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #input_video {
+      display: none;
+    }
+
+    /* --- UI 状态和提示 --- */
+    #status-bar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #fff;
+      font-size: 16px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 15px;
+      border-radius: 8px;
+      z-index: 100;
+    }
+
+    .hand-open {
+      color: #00ff88;
+    }
+
+    .hand-closed {
+      color: #ff3300;
+    }
+
+    .loading {
+      color: #ffaa00;
+    }
+
+    /* 权限弹窗 */
+    #permission-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #2a2a38;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: #fff;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      border: none;
+      color: white;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="status-bar" class="loading">正在加载资源...</div>
+
+  <video id="input_video"></video>
+
+  <div id="permission-modal">
+    <div class="modal-content">
+      <h3>手势模型交互 Demo</h3>
+      <p>本应用需要使用您的摄像头进行手势识别。</p>
+      <p>请保持**张开手**来重构模型，**慢慢握拳**来捏碎模型！</p>
+      <button onclick="handlePermission(true)">允许访问并开始</button>
+    </div>
+  </div>
+
+  <script>
+    // --- 全局变量配置 ---
+    const MODEL_SIZE = 10;
+    const DISPERSE_RANGE = 40; // 粒子最大分散范围
+    const LERP_SPEED = 0.1; // 粒子插值速度
+    let cameraEnabled = false;
+    let handFactor = 1.0; // 手势因子：1.0 (全开) 到 0.0 (全握)
+
+    let scene, camera, renderer;
+    let particles;
+
+    let targetPositions = []; // 存储模型的原始顶点位置 (Target)
+    let randomPositions = []; // 存储粒子分散后的随机位置 (Dispersed)
+
+    // --- 初始化 Three.js ---
+    function initThree () {
+      scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x050505, 1, 100);
+
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 25;
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      document.body.appendChild(renderer.domElement);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+
+      createParticleModel();
+
+      window.addEventListener('resize', onWindowResize, false);
+    }
+
+    // --- 核心：创建模型和粒子系统 ---
+    function createParticleModel () {
+      // 1. 定义要被“捏碎”的基础几何体 (使用一个复杂的结核体)
+      const modelGeometry = new THREE.TorusKnotGeometry(4, 1.5, 200, 32);
+
+      // 2. 将模型几何体的顶点位置提取出来
+      const positionAttribute = modelGeometry.getAttribute('position');
+      const particleCount = positionAttribute.count;
+
+      // 3. 初始化粒子系统的 BufferGeometry
+      const particleGeometry = new THREE.BufferGeometry();
+      const currentPositions = new Float32Array(particleCount * 3);
+
+      // 4. 准备目标位置和随机位置
+      targetPositions = new Float32Array(particleCount * 3);
+      randomPositions = new Float32Array(particleCount * 3);
+
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+
+        // 目标位置 (模型原始顶点)
+        targetPositions[i3] = positionAttribute.getX(i) * 1.5;
+        targetPositions[i3 + 1] = positionAttribute.getY(i) * 1.5;
+        targetPositions[i3 + 2] = positionAttribute.getZ(i) * 1.5;
+
+        // 随机分散位置 (用于捏碎后粒子的最终随机去向)
+        randomPositions[i3] = (Math.random() - 0.5) * DISPERSE_RANGE;
+        randomPositions[i3 + 1] = (Math.random() - 0.5) * DISPERSE_RANGE;
+        randomPositions[i3 + 2] = (Math.random() - 0.5) * DISPERSE_RANGE;
+
+        // 初始位置设定为目标位置
+        currentPositions[i3] = targetPositions[i3];
+        currentPositions[i3 + 1] = targetPositions[i3 + 1];
+        currentPositions[i3 + 2] = targetPositions[i3 + 2];
+      }
+
+      particleGeometry.setAttribute('position', new THREE.BufferAttribute(currentPositions, 3));
+
+      // 5. 创建 PointsMaterial
+      const material = new THREE.PointsMaterial({
+        color: 0x00ffff,
+        size: 0.15,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false
+      });
+
+      particles = new THREE.Points(particleGeometry, material);
+      scene.add(particles);
+    }
+
+    // --- 核心动画循环 ---
+    function animate () {
+      requestAnimationFrame(animate);
+
+      const positions = particles.geometry.attributes.position.array;
+      const particleCount = targetPositions.length / 3;
+
+      // 捏碎因子 (Dissolve Factor): 握拳越紧，因子越接近 1.0 (即越分散)
+      // handFactor 是 1 (开) 到 0 (握)，我们用 1 - handFactor
+      const dissolveFactor = 1.0 - handFactor;
+
+      // LERP_AMOUNT: 控制插值速度，使分解和重构过程平滑
+      const lerpAmount = LERP_SPEED * 0.5;
+
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+
+        // 目标位置 (T) 和分散位置 (D)
+        const targetX = targetPositions[i3];
+        const targetY = targetPositions[i3 + 1];
+        const targetZ = targetPositions[i3 + 2];
+
+        const randomX = randomPositions[i3];
+        const randomY = randomPositions[i3 + 1];
+        const randomZ = randomPositions[i3 + 2];
+
+        // --- 插值计算 (Lerp) ---
+
+        // desiredX 是在 T 和 D 之间，由 dissolveFactor 决定的理想位置
+        const desiredX = targetX + (randomX - targetX) * dissolveFactor;
+        const desiredY = targetY + (randomY - targetY) * dissolveFactor;
+        const desiredZ = targetZ + (randomZ - targetZ) * dissolveFactor;
+
+        // 实际位置平滑地趋向于理想位置
+        positions[i3] += (desiredX - positions[i3]) * lerpAmount;
+        positions[i3 + 1] += (desiredY - positions[i3 + 1]) * lerpAmount;
+        positions[i3 + 2] += (desiredZ - positions[i3 + 2]) * lerpAmount;
+      }
+
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      // 旋转模型，增加动感
+      particles.rotation.y += 0.005;
+      particles.rotation.x = Math.sin(particles.rotation.y) * 0.1;
+
+      renderer.render(scene, camera);
+    }
+
+    // --- MediaPipe 手势处理 ---
+    function onResults (results) {
+      const statusDiv = document.getElementById('status-bar');
+
+      if (!cameraEnabled) return;
+
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0];
+        const wrist = landmarks[0];
+        const tips = [4, 8, 12, 16, 20]; // 大拇指到小拇指指尖
+
+        // 计算手部开合度
+        let avgDist = 0;
+        tips.forEach(idx => {
+          const tip = landmarks[idx];
+          // 测量指尖到手腕的距离，但只看 XY 平面
+          const d = Math.sqrt(Math.pow(tip.x - wrist.x, 2) + Math.pow(tip.y - wrist.y, 2));
+          avgDist += d;
+        });
+        avgDist /= 5;
+
+        // 归一化手势因子：0.1 (全握) 到 0.5 (全开)
+        const MIN_DIST = 0.15; // 握拳时平均距离 (经验值)
+        const MAX_DIST = 0.45; // 张开时平均距离 (经验值)
+
+        handFactor = (avgDist - MIN_DIST) / (MAX_DIST - MIN_DIST);
+        handFactor = Math.min(Math.max(handFactor, 0.0), 1.0); // 限制在 [0, 1]
+
+
+        // --- UI 状态更新 ---
+        if (handFactor < 0.2) {
+          statusDiv.innerHTML = `手势因子: ${handFactor.toFixed(2)} | **用力捏碎中...** 💥`;
+          statusDiv.className = 'hand-closed';
+          particles.material.color.set(0xff0000); // 捏碎时变红
+        } else if (handFactor > 0.8) {
+          statusDiv.innerHTML = `手势因子: ${handFactor.toFixed(2)} | **重构模型...** ✨`;
+          statusDiv.className = 'hand-open';
+          particles.material.color.set(0x00ffff); // 张开时变蓝
+        } else {
+          statusDiv.innerHTML = `手势因子: ${handFactor.toFixed(2)} | 缓慢变化中...`;
+          statusDiv.className = '';
+          particles.material.color.set(0xffffff); // 中间状态为白
+        }
+
+      } else {
+        statusDiv.innerHTML = "等待手势...";
+        statusDiv.className = 'loading';
+        handFactor *= 0.95; // 缓慢回归张开状态
+      }
+    }
+
+    // --- 摄像头和 MediaPipe 启动 ---
+    function handlePermission (allow) {
+      document.getElementById('permission-modal').style.display = 'none';
+
+      if (allow) {
+        cameraEnabled = true;
+        startCameraAndHands();
+      } else {
+        alert("您需要允许摄像头权限才能使用手势交互。");
+      }
+    }
+
+    function startCameraAndHands () {
+      const videoElement = document.getElementById('input_video');
+      const statusDiv = document.getElementById('status-bar');
+
+      statusDiv.innerHTML = "正在初始化 AI 模型...";
+
+      const hands = new Hands({
+        locateFile: (file) => {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+        }
+      });
+
+      hands.setOptions({
+        maxNumHands: 1,
+        modelComplexity: 1,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+      });
+
+      hands.onResults(onResults);
+
+      const cameraUtils = new Camera(videoElement, {
+        onFrame: async () => {
+          if (cameraEnabled) {
+            await hands.send({ image: videoElement });
+          }
+        },
+        width: 640,
+        height: 480
+      });
+
+      cameraUtils.start()
+        .then(() => { statusDiv.innerHTML = "AI 启动成功，请靠近摄像头并张开手掌..."; })
+        .catch(err => {
+          cameraEnabled = false;
+          statusDiv.innerHTML = "摄像头启动失败: " + err + " (请检查 HTTPS/权限)";
+          statusDiv.className = 'hand-closed';
+        });
+    }
+
+    function onWindowResize () {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // --- 启动流程 ---
+    window.onload = function () {
+      initThree();
+      animate();
+    };
+
+  </script>
+</body>
+
+</html>
