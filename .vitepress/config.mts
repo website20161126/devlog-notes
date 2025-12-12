@@ -19,7 +19,7 @@ export default defineConfig({
       { text: 'TypeScript', link: '/typescript/' },
       { text: '工程化', link: '/engineering/' },
       { text: '可视化', link: '/visualization/' },
-      { text: 'Three.js 粒子系统交互', link: '/threejs-particles' },
+      { text: 'Three.js', link: '/threejs/' },
       { text: '监控系统', link: '/monitor-system/' },
       { text: 'Git命令', link: '/git/' },
       { text: '前端框架', link: '/frameworks/' },
@@ -128,7 +128,6 @@ export default defineConfig({
             { text: 'ECharts', link: '/visualization/echarts' },
             { text: 'SVG', link: '/visualization/svg' },
             { text: 'Canvas', link: '/visualization/canvas' },
-            { text: 'Three.js 技术文档', link: '/visualization/threejs-particles' },
           ],
         },
       ],
@@ -153,6 +152,18 @@ export default defineConfig({
             { text: '分支管理', link: '/git/branch' },
             { text: '远程操作', link: '/git/remote' },
             { text: '高级技巧', link: '/git/advanced' },
+          ],
+        },
+      ],
+
+      '/threejs/': [
+        {
+          text: 'Three.js',
+          items: [
+            { text: '概述', link: '/threejs/' },
+            { text: '粒子系统交互', link: '/threejs/particles' },
+            { text: '手势捏碎模型', link: '/threejs/gesture-crush' },
+            { text: '技术文档', link: '/threejs/docs' },
           ],
         },
       ],
@@ -183,7 +194,8 @@ export default defineConfig({
 
     // 编辑链接
     editLink: {
-      pattern: 'https://github.com/website20161126/devlog-notes/edit/main/:path',
+      pattern:
+        'https://github.com/website20161126/devlog-notes/edit/main/:path',
       text: '在 GitHub 上编辑此页面',
     },
 
@@ -211,9 +223,29 @@ export default defineConfig({
     lineNumbers: true,
   },
 
-  // 自定义样式
+  // 自定义样式和脚本
   head: [
-    ['link', { rel: 'stylesheet', href: '/custom.css' }]
+    ['link', { rel: 'stylesheet', href: '/custom.css' }],
+    [
+      'script',
+      {
+        src: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+      },
+    ],
+    [
+      'script',
+      {
+        src: 'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js',
+        crossorigin: 'anonymous',
+      },
+    ],
+    [
+      'script',
+      {
+        src: 'https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js',
+        crossorigin: 'anonymous',
+      },
+    ],
   ],
 
   // Vite 配置
@@ -223,9 +255,8 @@ export default defineConfig({
     },
     css: {
       postcss: {
-        plugins: []
-      }
-    }
+        plugins: [],
+      },
+    },
   },
-
 });
